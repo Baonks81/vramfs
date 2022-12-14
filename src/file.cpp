@@ -33,7 +33,7 @@ namespace vram {
 
         int file_t::read(off_t off, size_t size, char* data, std::mutex& wait_mutex) {
             if ((size_t) off >= _size) return 0;
-            size = std::min(_size - off, size);
+            size = std::min<unsigned long>(_size - off, size);
 
             // Walk over blocks in read region
             off_t end_pos = off + size;
@@ -43,7 +43,7 @@ namespace vram {
                 // Find block corresponding to current offset
                 off_t block_start = (off / memory::block::size) * memory::block::size;
                 off_t block_off = off - block_start;
-                size_t read_size = std::min(memory::block::size - block_off, size);
+                size_t read_size = std::min<unsigned long>(memory::block::size - block_off, size);
 
                 auto block = get_block(block_start);
 
@@ -76,7 +76,7 @@ namespace vram {
                 // Find block corresponding to current offset
                 off_t block_start = (off / memory::block::size) * memory::block::size;
                 off_t block_off = off - block_start;
-                size_t write_size = std::min(memory::block::size - block_off, size);
+                size_t write_size = std::min<unsigned long>(memory::block::size - block_off, size);
 
                 auto block = get_block(block_start);
 
